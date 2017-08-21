@@ -20,9 +20,21 @@ var Ship = (function() {
         acceleration = createVector(0,0);
       }
     },
+    checkWrap: function() {
+      console.log(` y ${this.position.y} > abs height/2 ${Math.abs(height/2)}`);
+      if (Math.abs(this.position.y) > Math.abs(height/2) ) {
+        this.position.y *= -1;
+      }
+      if (Math.abs(this.position.x) > Math.abs(width/2)) {
+        this.position.x *= -1;
+      }
+    },
 
     // draw ship on canvas
     render: function() {
+      // console.log(`position ${position.toString()}`);
+
+      this.checkWrap();
 
       position.add(velocity);
       velocity.add(acceleration);
