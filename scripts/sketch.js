@@ -2,7 +2,6 @@ var game;
 var myShip;
 var asteroids = [];
 const NUM_AST = 10;
-var hits = []; // should get rid of this with better life tracking
 
 function setup() {
   var asteroidCanvas = createCanvas(window.innerWidth, window.innerHeight); // create game canvas
@@ -46,7 +45,6 @@ function gamePlay() {
   steerShip();
   checkCollisions();
   handleAsteroids();
-  // handleShooting();
 
   if (game.getLives() === 0) gameOver();
 }
@@ -69,13 +67,10 @@ function checkCollisions() {
   var hit = false;
 
   for (var i = 0; i < NUM_AST; i++) {
-    if (i === hits[0] || i === hits[1] || i === hits[2]) { //if we already hit this asteroid
-      continue;
-    }
     // collide functions return a bool for whether these objects are colliding
     hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
     if (hit) {
-      hits.push(i); // move index of hit asteroid to hit list
+      explodeAstroid(i);
       game.addScore('collision');
       game.loseLife();
       centerShip();
@@ -83,6 +78,42 @@ function checkCollisions() {
       hit = false;
     }
   }
+}
+
+// uses p5 collide2d library to check if ship's bullets are colliding with asteroids
+function checkCollisions() {
+  triPoly = [createVector(myShip.position.x-10, myShip.position.y+10), createVector(myShip.position.x+0, myShip.position.y-20), createVector(myShip.position.x+10, myShip.position.y+10) ];
+  var hit = false;
+
+  for (var i = 0; i < NUM_AST; i++) {
+
+    // collide functions return a bool for whether these objects are colliding
+    hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
+    if (hit) {
+      explodeAstroid(i);
+      game.addScore('collision');
+      game.loseLife();
+      centerShip();
+      console.log('HIT ' + i + ' lives' + game.getLives() );
+      hit = false;
+    }
+  }
+}
+
+function explodeAstroid(index) {
+  var randomOffset = 15;
+  var newAst1 = new Asteroid();
+  newAst1.diameter = asteroids[index].diameter/2;
+  newAst1.timeOffset = 0;
+  newAst1.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
+  newAst1.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
+  var newAst2 = new Asteroid();
+  newAst2.diameter = asteroids[index].diameter/2;
+  newAst2.timeOffset = 0;
+  newAst2.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
+  newAst2.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
+
+  asteroids.splice(index, 1, newAst1, newAst2);
 }
 
 function keyPressed() {
