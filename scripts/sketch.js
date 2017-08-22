@@ -115,7 +115,15 @@ function displayScore() {
 
 function displayLives() {
   noFill();
-  triangle(-10, 10, 0, -20, 10, 10);
+  var xOffset = 40;
+  var yOffset = 80;
+  for (var i = 0; i < game.lives; i++) {
+    triangle(
+      (xOffset*(i+1))-10, yOffset+10,
+      (xOffset*(i+1))+0, yOffset-20,
+      (xOffset*(i+1))+10, yOffset+10
+    );
+  }
 }
 
 function centerShip() {
