@@ -20,13 +20,13 @@ function Asteroid() {
   this.position = this.setStartPos();
   this.velocity = p5.Vector.random2D();
   this.timeStart = frameCount;
-  this.timeOffset = random(0, 15);
+  this.timeOffset = frameRate()*random(0, 5);
 
   this.move = function() {
-    if (frameCount - timeStart > timeOffset) {
+    if ((frameCount - this.timeStart) > this.timeOffset) {
       this.position.add(this.velocity);
     }
-    else console.log('waiting');
+    else console.log(`waiting for ${this.timeOffset}`);
   };
 
   // draw asteroid on canvas

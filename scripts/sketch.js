@@ -1,7 +1,7 @@
 var game;
 var myShip;
 var asteroids = [];
-const NUM_AST = 1;
+const NUM_AST = 10;
 var hits = []; // should get rid of this with better life tracking
 
 function setup() {
