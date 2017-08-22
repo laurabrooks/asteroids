@@ -21,6 +21,20 @@ function setup() {
 function draw() {
   background(0);
 
+  switch (game.state) {
+    case 0: //playing
+      gamePlay();
+      break;
+    case 1: //game over
+      gameOver();
+      break;
+  }
+}
+
+function gamePlay() {
+  displayScore();
+  displayLives();
+
   myShip.move();
   myShip.display();
 
@@ -32,10 +46,9 @@ function draw() {
   steerShip();
   checkCollisions();
   handleAsteroids();
+  // handleShooting();
 
-  if (game.getLives() === 0) {
-    reset();
-  }
+  if (game.getLives() === 0) gameOver();
 }
 
 // takes user input for arrow keys and steers the ship
@@ -64,7 +77,9 @@ function checkCollisions() {
     hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
     if (hit) {
       hits.push(i); // move index of hit asteroid to hit list
+      game.addScore('collision');
       game.loseLife();
+      centerShip();
       console.log('HIT ' + i + ' lives' + game.getLives() );
       hit = false;
     }
@@ -83,7 +98,34 @@ function handleAsteroids() {
   }
 }
 
-function reset() {
-  game.reset();
+function displayScore() {
+  fill(255);
+  textFont('monospace', 40);
+  text(game.score, 40, 40);
+}
+
+function displayLives() {
+  noFill();
+  triangle(-10, 10, 0, -20, 10, 10);
+}
+
+function centerShip() {
+  myShip.position = createVector(0,0);
+  myShip.velocity = createVector(0,0);
+  myShip.acceleration = createVector(0,0);
+  myShip.theta = 3*PI / 2;
+}
+
+function gameOver() {
   hits = [];
+  game.state = 1;
+
+  background(0);
+  textAlign(CENTER);
+  fill(255);
+  text('GAMEOVER', width/2, height/2-60);
+  text(`SCORE ${game.score}`, width/2, height/2-20);
+  fill((frameCount%255));
+  text("press 'enter' to play again", width/2, height/2+40);
+
 }

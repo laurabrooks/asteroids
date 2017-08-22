@@ -3,7 +3,7 @@ function Ship() {
   this.position = createVector(0, 0);
   this.velocity = createVector(0, 0);
   this.acceleration = createVector(0, 0);
-  this.theta = 0;
+  this.theta = 3*PI / 2;
   this.accelIncr = 0.1;
   this.thetaIncr = 0.1;
   this.drag = 0.998;

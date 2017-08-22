@@ -22,11 +22,11 @@ function Asteroid() {
   this.timeStart = frameCount;
   this.timeOffset = frameRate()*random(0, 5);
 
+  // moves asteroid after its time offset
   this.move = function() {
     if ((frameCount - this.timeStart) > this.timeOffset) {
       this.position.add(this.velocity);
     }
-    else console.log(`waiting for ${this.timeOffset}`);
   };
 
   // draw asteroid on canvas

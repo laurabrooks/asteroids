@@ -8,6 +8,7 @@
 function Game() {
   this.score = 0;
   this.lives = 3;
+  this.state = 0;
 
   this.getLives = function() {
     return this.lives;
@@ -18,8 +19,12 @@ function Game() {
   this.getScore = function() {
     return this.lives;
   };
-  this.addScore = function() {
-    this.score++;
+  this.addScore = function(type) {
+    switch (type) {
+      case 'collision':
+        this.score += 20;
+        break;
+    }
   };
   this.reset = function() {
     this.score = 0;
