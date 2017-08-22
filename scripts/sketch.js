@@ -1,18 +1,23 @@
-var position;
-var velocity;
-var acceleration;
+// var position;
+// var velocity;
+// var acceleration;
 var asteroids = [];
 const NUM_AST = 50;
+var hits = [];
+var myShip;
 
 function setup() {
   var asteroidCanvas = createCanvas(window.innerWidth, window.innerHeight); // create game canvas
   asteroidCanvas.parent('canvas-container');   // append game canvas to DOM container
 
-  position = createVector(0, 0);
-  velocity = createVector(0, 0);
-  acceleration = createVector(0, 0);
+  // position = createVector(0, 0);
+  // velocity = createVector(0, 0);
+  // acceleration = createVector(0, 0);
+
+  // create ship and asteroids
+  myShip = new Ship();
   for (let i = 0; i < NUM_AST; i++) {
-    asteroids[i] = Asteroid();
+    asteroids[i] = new Asteroid();
   }
   collideDebug(true);
 }
@@ -20,46 +25,58 @@ function setup() {
 function draw() {
   background(0);
 
-  Ship.position = position; // this seems weird...
-  Ship.render();
+  // myShip.position = position; // this seems weird...
+  myShip.move();
+  myShip.display();
 
   steerShip();
 
   for (let i = 0; i < NUM_AST; i++) {
-    asteroids[i].render();
+    asteroids[i].move();
+    asteroids[i].display();
   }
 
   checkCollisions();
+
+  if (Game.lives === 0) {
+    console.log('you lose!');
+  }
 }
 
+// takes user input for arrow keys and steers the ship
 function steerShip() {
 
   if (keyIsDown(UP_ARROW)) { // thrust forward if arrow is pressed
-    Ship.thrust(true);
+    myShip.thrust(true);
   } else {                   // stop thrusting when arrow is released
-    Ship.thrust(false);
+    myShip.thrust(false);
   }
-  if (keyIsDown(RIGHT_ARROW)) Ship.rotate('right');
-  if (keyIsDown(LEFT_ARROW)) Ship.rotate('left');
+  if (keyIsDown(RIGHT_ARROW)) myShip.turn('right');
+  if (keyIsDown(LEFT_ARROW)) myShip.turn('left');
   if (keyIsDown(DOWN_ARROW)) console.log(`mouseX ${mouseX} mouseY ${mouseY}`);
 }
 
+// uses p5 collide2d library to check if ship is colliding with asteroids
 function checkCollisions() {
-  triPoly = [createVector(Ship.position.x-10, Ship.position.y+10), createVector(Ship.position.x+0, Ship.position.y-20), createVector(Ship.position.x+10, Ship.position.y+10) ];
-  let hit = false;
-
-  // test code with circle on mouse
-  // if (hit) fill(255, 0, 0);
-  // else fill(0, 0, 255);
-  // ellipse(mouseX,mouseY,20,20);
-  // hit = collideCirclePoly(mouseX, mouseY, 20, triPoly)
-
+  triPoly = [createVector(myShip.position.x-10, myShip.position.y+10), createVector(myShip.position.x+0, myShip.position.y-20), createVector(myShip.position.x+10, myShip.position.y+10) ];
+  var hit = false;
 
   for (var i = 0; i < NUM_AST; i++) {
-    // hit = collideCircleCircle(mouseX, mouseY, 20, asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter)
-
+    if (i === hits[0] || i === hits[1] || i === hits[2]) { //if we already hit this asteroid
+      continue;
+    }
+    // collide functions return a bool for whether these objects are colliding
     hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
-    if (hit) console.log('HIT ' + i);
+    if (hit) {
+      hits.push(i); // move index of hit asteroid to hit list
+      Game.lives--;
+      console.log('HIT ' + i + ' lives' + Game.lives);
+      hit = false;
+    }
   }
+}
 
+function reset() {
+  // game.points, game.lives
+  // change global variable to reset
 }

@@ -2,7 +2,7 @@ var Asteroid = (function() {
   return {
     position: p5.Vector.random2D().mult(width),
     velocity: p5.Vector.random2D(),
-    diameter: Math.random()*100,
+    diameter: Math.floor(Math.random()*80) + Math.floor(Math.random()*20), //random diameter between 20 and 80
 
     // draw asteroid on canvas
     render: function() {

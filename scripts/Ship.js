@@ -44,7 +44,6 @@ var Ship = (function() {
       push();
       translate(width / 2, height / 2); // make these calculations relative to the center of canvas
       translate(this.position.x, this.position.y); // then ship's position
-      console.log(this.position.x, this.position.y);
       rotate(this.theta + HALF_PI);
       triangle(-10, 10, 0, -20, 10, 10);
       pop();
