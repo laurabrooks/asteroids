@@ -61,7 +61,6 @@ function steerShip() {
   }
   if (keyIsDown(RIGHT_ARROW)) myShip.turn('right');
   if (keyIsDown(LEFT_ARROW)) myShip.turn('left');
-  if (keyIsDown(DOWN_ARROW)) console.log(`mouseX ${mouseX} mouseY ${mouseY}`);
 }
 
 // uses p5 collide2d library to check if ship is colliding with asteroids
@@ -82,6 +81,15 @@ function checkCollisions() {
       centerShip();
       console.log('HIT ' + i + ' lives' + game.getLives() );
       hit = false;
+    }
+  }
+}
+
+function keyPressed() {
+  if (game.state === 0) {
+    if (keyCode === 32) { // space bar
+      myShip.shoot();
+      return false;
     }
   }
 }

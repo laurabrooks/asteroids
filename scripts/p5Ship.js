@@ -52,4 +52,8 @@ function Ship() {
     triangle(-10, 10, 0, -20, 10, 10);
     pop();
   };
+
+  this.shoot = function() {
+    console.log('shooting');
+  }
 }
