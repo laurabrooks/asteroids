@@ -125,7 +125,12 @@ function gameOver() {
   fill(255);
   text('GAMEOVER', width/2, height/2-60);
   text(`SCORE ${game.score}`, width/2, height/2-20);
-  fill((frameCount%255));
+  if (frameCount%45 > 22) fill(0); // make text flash
+  else fill(255);
   text("press 'enter' to play again", width/2, height/2+40);
 
+  if (keyIsDown(ENTER)) {
+    game.reset();
+    game.state = 0;
+  }
 }
