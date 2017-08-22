@@ -1,6 +1,8 @@
 var position;
 var velocity;
 var acceleration;
+var asteroids = [];
+const NUM_AST = 50;
 
 function setup() {
   var asteroidCanvas = createCanvas(window.innerWidth, window.innerHeight); // create game canvas
@@ -9,6 +11,10 @@ function setup() {
   position = createVector(0, 0);
   velocity = createVector(0, 0);
   acceleration = createVector(0, 0);
+  for (let i = 0; i < NUM_AST; i++) {
+    asteroids[i] = Asteroid();
+  }
+  collideDebug(true);
 }
 
 function draw() {
@@ -18,6 +24,12 @@ function draw() {
   Ship.render();
 
   steerShip();
+
+  for (let i = 0; i < NUM_AST; i++) {
+    asteroids[i].render();
+  }
+
+  checkCollisions();
 }
 
 function steerShip() {
@@ -29,4 +41,24 @@ function steerShip() {
   }
   if (keyIsDown(RIGHT_ARROW)) Ship.rotate('right');
   if (keyIsDown(LEFT_ARROW)) Ship.rotate('left');
+  if (keyIsDown(DOWN_ARROW)) console.log(`mouseX ${mouseX} mouseY ${mouseY}`);
+}
+
+function checkCollisions() {
+  triPoly = [createVector(Ship.position.x-10, Ship.position.y+10), createVector(Ship.position.x+0, Ship.position.y-20), createVector(Ship.position.x+10, Ship.position.y+10) ];
+  let hit = false;
+
+  if (hit) fill(255, 0, 0);
+  else fill(0, 0, 255);
+  ellipse(mouseX,mouseY,20,20);
+  // hit = collideCirclePoly(mouseX, mouseY, 20, triPoly)
+
+
+  for (var i = 0; i < NUM_AST; i++) {
+    hit = collideCircleCircle(mouseX, mouseY, 20, asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter)
+
+    // let hit = collideCirclePoly(asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter, triPoly)
+    if (hit) console.log('HIT ' + i);
+  }
+
 }

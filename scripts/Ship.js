@@ -7,6 +7,8 @@ var Ship = (function() {
     theta: 0,
     accelIncr: 0.1,
     thetaIncr: 0.1,
+    drag: 0.998,
+    
 
     rotate: function(direction) {
       if (direction === 'right') this.theta += this.thetaIncr;
@@ -21,7 +23,6 @@ var Ship = (function() {
       }
     },
     checkWrap: function() {
-      console.log(` y ${this.position.y} > abs height/2 ${Math.abs(height/2)}`);
       if (Math.abs(this.position.y) > Math.abs(height/2) ) {
         this.position.y *= -1;
       }
@@ -32,21 +33,17 @@ var Ship = (function() {
 
     // draw ship on canvas
     render: function() {
-      // console.log(`position ${position.toString()}`);
-
       this.checkWrap();
 
       position.add(velocity);
+      velocity.mult(this.drag);
       velocity.add(acceleration);
 
       stroke(255);
       noFill();
       push();
-      // centre screen
-      translate(width / 2, height / 2);
-      // position
-      translate(this.position.x, this.position.y);
-      // orientation
+      translate(width / 2, height / 2); // make these calculations relative to the center of canvas
+      translate(this.position.x, this.position.y); // then ship's position
       rotate(this.theta + HALF_PI);
       triangle(-10, 10, 0, -20, 10, 10);
       pop();
