@@ -2,14 +2,13 @@ function Bullet(x, y, theta) {
   this.position = createVector(x, y);
   this.velocity = createVector(1, 0);
   this.theta = theta;
+  this.diameter = 2;
 
   // initial fire
   // set up this bullet's vectors based on ship position at fire time
   this.fire = function() {
-      this.velocity.rotate(this.theta);
-      this.velocity.setMag(8);
-      console.log(this.position.toString());
-      console.log('theta '+ degrees(this.theta));
+    this.velocity.rotate(this.theta);
+    this.velocity.setMag(8);
   };
 
   // update bullet position
@@ -21,6 +20,6 @@ function Bullet(x, y, theta) {
   this.display = function() {
     stroke(255);
     noFill();
-    ellipse(this.position.x, this.position.y, 2);
+    ellipse(this.position.x, this.position.y, this.diameter);
   };
 }

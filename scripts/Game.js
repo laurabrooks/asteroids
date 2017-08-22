@@ -24,6 +24,9 @@ function Game() {
       case 'collision':
         this.score += 20;
         break;
+      case 'shot':
+        this.score += 100;
+        break;
     }
   };
   this.reset = function() {

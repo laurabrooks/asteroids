@@ -1,5 +1,6 @@
 function Asteroid() {
-  this.diameter = random(20, 100); //random diameter between 20 and 80
+  this.diameter = random(100, 200); //random diameter between 20 and 80
+  // this.diameter = random(20, 100); //random diameter between 20 and 80
   this.setStartPos = function() {
     var side = Math.round(Math.random()); //random either 0 or 1
     var offset = this.diameter/2; // amount to offset so asteroid start off screen

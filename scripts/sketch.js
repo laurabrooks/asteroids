@@ -43,7 +43,8 @@ function gamePlay() {
   }
 
   steerShip();
-  checkCollisions();
+  checkShipCollisions();
+  checkBulletCollisions();
   handleAsteroids();
 
   if (game.getLives() === 0) gameOver();
@@ -62,7 +63,7 @@ function steerShip() {
 }
 
 // uses p5 collide2d library to check if ship is colliding with asteroids
-function checkCollisions() {
+function checkShipCollisions() {
   triPoly = [createVector(myShip.position.x-10, myShip.position.y+10), createVector(myShip.position.x+0, myShip.position.y-20), createVector(myShip.position.x+10, myShip.position.y+10) ];
   var hit = false;
 
@@ -81,21 +82,26 @@ function checkCollisions() {
 }
 
 // uses p5 collide2d library to check if ship's bullets are colliding with asteroids
-function checkCollisions() {
-  triPoly = [createVector(myShip.position.x-10, myShip.position.y+10), createVector(myShip.position.x+0, myShip.position.y-20), createVector(myShip.position.x+10, myShip.position.y+10) ];
+function checkBulletCollisions() {
   var hit = false;
 
-  for (var i = 0; i < NUM_AST; i++) {
+  for (var i = 0; i < myShip.bullets.length; i++) {
+    for (var j = 0; j < NUM_AST; j++) {
 
-    // collide functions return a bool for whether these objects are colliding
-    hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
-    if (hit) {
-      explodeAstroid(i);
-      game.addScore('collision');
-      game.loseLife();
-      centerShip();
-      console.log('HIT ' + i + ' lives' + game.getLives() );
-      hit = false;
+      // collide functions return a bool for whether these objects are colliding
+      hit = collideCircleCircle(
+        asteroids[j].position.x, asteroids[j].position.y,
+        asteroids[j].diameter,
+        myShip.bullets[i].position.x, myShip.bullets[i].position.y,
+        myShip.bullets[i].diameter
+      )
+      if (hit) {
+        console.log('SHOT');
+        explodeAstroid(j);
+        game.addScore('shot');
+        console.log('HIT asteroid' + j + ' bullet ' + i);
+        hit = false;
+      }
     }
   }
 }
