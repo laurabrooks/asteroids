@@ -86,6 +86,7 @@ function checkCollisions() {
 }
 
 function keyPressed() {
+  ellipse(0,0, 50);
   if (game.state === 0) {
     if (keyCode === 32) { // space bar
       myShip.shoot();

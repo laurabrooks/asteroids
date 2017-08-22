@@ -7,6 +7,7 @@ function Ship() {
   this.accelIncr = 0.1;
   this.thetaIncr = 0.1;
   this.drag = 0.998;
+  this.bullets = [];
 
 
   this.turn = function(direction) {
@@ -50,10 +51,18 @@ function Ship() {
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);
     triangle(-10, 10, 0, -20, 10, 10);
+    for (var i = 0; i < this.bullets.length; i++) {
+      this.bullets[i].move();
+      this.bullets[i].display();
+    }
     pop();
+
+
   };
 
   this.shoot = function() {
+    this.bullets[this.bullets.length] = new Bullet(this.theta); // add a bullet
+    this.bullets[this.bullets.length-1].fire();
     console.log('shooting');
   }
 }
