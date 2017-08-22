@@ -48,16 +48,17 @@ function checkCollisions() {
   triPoly = [createVector(Ship.position.x-10, Ship.position.y+10), createVector(Ship.position.x+0, Ship.position.y-20), createVector(Ship.position.x+10, Ship.position.y+10) ];
   let hit = false;
 
-  if (hit) fill(255, 0, 0);
-  else fill(0, 0, 255);
-  ellipse(mouseX,mouseY,20,20);
+  // test code with circle on mouse
+  // if (hit) fill(255, 0, 0);
+  // else fill(0, 0, 255);
+  // ellipse(mouseX,mouseY,20,20);
   // hit = collideCirclePoly(mouseX, mouseY, 20, triPoly)
 
 
   for (var i = 0; i < NUM_AST; i++) {
-    hit = collideCircleCircle(mouseX, mouseY, 20, asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter)
+    // hit = collideCircleCircle(mouseX, mouseY, 20, asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter)
 
-    // let hit = collideCirclePoly(asteroids[i].position.x,asteroids[i].position.y,asteroids[i].diameter, triPoly)
+    hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
     if (hit) console.log('HIT ' + i);
   }
 

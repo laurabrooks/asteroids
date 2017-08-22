@@ -11,7 +11,10 @@ var Asteroid = (function() {
 
       stroke(255);
       noFill();
-      ellipse(this.position.x, this.position.y, 50, 50);
+      // push();
+      // translate(width/2, height/2);
+      ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
+      // pop();
     }
   }
 });
