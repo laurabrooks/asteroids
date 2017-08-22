@@ -1,45 +1,39 @@
-// var position;
-// var velocity;
-// var acceleration;
+var game;
+var myShip;
 var asteroids = [];
 const NUM_AST = 50;
-var hits = [];
-var myShip;
+var hits = []; // should get rid of this with better life tracking
 
 function setup() {
   var asteroidCanvas = createCanvas(window.innerWidth, window.innerHeight); // create game canvas
   asteroidCanvas.parent('canvas-container');   // append game canvas to DOM container
 
-  // position = createVector(0, 0);
-  // velocity = createVector(0, 0);
-  // acceleration = createVector(0, 0);
-
-  // create ship and asteroids
+  // create game, ship and asteroids
+  game = new Game();
   myShip = new Ship();
   for (let i = 0; i < NUM_AST; i++) {
     asteroids[i] = new Asteroid();
   }
+
   collideDebug(true);
 }
 
 function draw() {
   background(0);
 
-  // myShip.position = position; // this seems weird...
   myShip.move();
   myShip.display();
-
-  steerShip();
 
   for (let i = 0; i < NUM_AST; i++) {
     asteroids[i].move();
     asteroids[i].display();
   }
 
+  steerShip();
   checkCollisions();
 
-  if (Game.lives === 0) {
-    console.log('you lose!');
+  if (game.getLives() === 0) {
+    reset();
   }
 }
 
@@ -69,14 +63,14 @@ function checkCollisions() {
     hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
     if (hit) {
       hits.push(i); // move index of hit asteroid to hit list
-      Game.lives--;
-      console.log('HIT ' + i + ' lives' + Game.lives);
+      game.loseLife();
+      console.log('HIT ' + i + ' lives' + game.getLives() );
       hit = false;
     }
   }
 }
 
 function reset() {
-  // game.points, game.lives
-  // change global variable to reset
+  game.reset();
+  hits = [];
 }

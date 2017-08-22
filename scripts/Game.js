@@ -8,5 +8,21 @@
 function Game() {
   this.score = 0;
   this.lives = 3;
-  this.gameOver = false;
+
+  this.getLives = function() {
+    return this.lives;
+  };
+  this.loseLife = function() {
+    this.lives--;
+  };
+  this.getScore = function() {
+    return this.lives;
+  };
+  this.addScore = function() {
+    this.score++;
+  };
+  this.reset = function() {
+    this.score = 0;
+    this.lives = 3;
+  }
 }
