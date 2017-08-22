@@ -1,14 +1,14 @@
-function Bullet(theta) {
-  this.position = createVector(0, 0);
-  this.velocity = createVector(0, 1);
-  this.acceleration = createVector(0, 0);
+function Bullet(x, y, theta) {
+  this.position = createVector(x, y);
+  this.velocity = createVector(1, 0);
   this.theta = theta;
-  this.magnitude = 200;
 
+  // initial fire
   this.fire = function() {
-      // this.acceleration = createVector(this.accelIncr*cos(this.theta), this.accelIncr*sin(this.theta), 0);
       this.velocity.rotate(this.theta);
-      this.velocity.setMag(10);
+      this.velocity.setMag(8);
+      console.log(this.position.toString());
+      console.log('theta '+ degrees(this.theta));
   };
 
   // update bullet position
@@ -22,10 +22,9 @@ function Bullet(theta) {
     stroke(255);
     noFill();
     push();
-    translate(width / 2, height / 2); // make these calculations relative to the center of canvas
-    // translate(this.position.x, this.position.y); // then ship's position
-    //rotate(this.theta + HALF_PI);
-    ellipse(0, 0, 2);
+//    translate(width / 2, height / 2); // make these calculations relative to the center of canvas
+    // rotate(this.theta + HALF_PI);
+    ellipse(this.position.x, this.position.y, 2);
     pop();
   };
 }

@@ -51,17 +51,16 @@ function Ship() {
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);
     triangle(-10, 10, 0, -20, 10, 10);
+    pop();
     for (var i = 0; i < this.bullets.length; i++) {
       this.bullets[i].move();
       this.bullets[i].display();
     }
-    pop();
-
 
   };
 
   this.shoot = function() {
-    this.bullets[this.bullets.length] = new Bullet(this.theta); // add a bullet
+    this.bullets[this.bullets.length] = new Bullet(this.position.x+width/2, this.position.y+height/2, this.theta); // add a bullet
     this.bullets[this.bullets.length-1].fire();
     console.log('shooting');
   }
