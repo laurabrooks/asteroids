@@ -1,7 +1,7 @@
 var game;
 var myShip;
 var asteroids = [];
-const NUM_AST = 50;
+const NUM_AST = 1;
 var hits = []; // should get rid of this with better life tracking
 
 function setup() {
@@ -31,6 +31,7 @@ function draw() {
 
   steerShip();
   checkCollisions();
+  handleAsteroids();
 
   if (game.getLives() === 0) {
     reset();
@@ -66,6 +67,18 @@ function checkCollisions() {
       game.loseLife();
       console.log('HIT ' + i + ' lives' + game.getLives() );
       hit = false;
+    }
+  }
+}
+
+function handleAsteroids() {
+  // don't go off in random directions forever
+  for (var i = 0; i < NUM_AST; i++) {
+    if (asteroids[i].position.x > (width+asteroids[i].diameter/2) || asteroids[i].position.x < -(asteroids[i].diameter/2)) {
+      asteroids[i] = new Asteroid();
+    }
+    if (asteroids[i].position.y > (height+asteroids[i].diameter/2) || asteroids[i].position.y < -(asteroids[i].diameter/2)) {
+      asteroids[i] = new Asteroid();
     }
   }
 }

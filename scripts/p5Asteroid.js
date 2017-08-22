@@ -1,19 +1,38 @@
 function Asteroid() {
-  this.position = p5.Vector.random2D().mult(width); //do better math/vector math?
+  this.diameter = random(20, 100); //random diameter between 20 and 80
+  this.setStartPos = function() {
+    var side = Math.round(Math.random()); //random either 0 or 1
+    var offset = this.diameter/2; // amount to offset so asteroid start off screen
+
+    if (side === 0) {
+      var x = Math.round(Math.random());
+      if (x === 0) offset *= -1;
+      var startVector = createVector(x*width+offset, random(height));
+    }
+    else {
+      var y = Math.round(Math.random());
+      if (y === 0) offset *= -1;
+      var startVector = createVector(random(width), y*height+offset);
+    }
+    return startVector;
+  };
+
+  this.position = this.setStartPos();
   this.velocity = p5.Vector.random2D();
-  this.diameter = Math.floor(Math.random()*80) + Math.floor(Math.random()*20); //random diameter between 20 and 80
+  this.timeStart = frameCount;
+  this.timeOffset = random(0, 15);
 
   this.move = function() {
-    this.position.add(this.velocity);
+    if (frameCount - timeStart > timeOffset) {
+      this.position.add(this.velocity);
+    }
+    else console.log('waiting');
   };
 
   // draw asteroid on canvas
   this.display = function() {
     stroke(255);
     noFill();
-    // push();
-    // translate(width/2, height/2);
     ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
-    // pop();
   };
 }
