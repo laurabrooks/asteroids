@@ -32,8 +32,10 @@ function Asteroid() {
 
   // draw asteroid on canvas
   this.display = function() {
-    stroke(255);
-    noFill();
-    ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
+    if ((frameCount - this.timeStart) > this.timeOffset) {
+      stroke(255);
+      noFill();
+      ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
+    }
   };
 }

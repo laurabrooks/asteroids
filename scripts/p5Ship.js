@@ -6,7 +6,7 @@ function Ship() {
   this.theta = 3*PI / 2;
   this.accelIncr = 0.1;
   this.thetaIncr = 0.1;
-  this.drag = 0.998;
+  this.drag = 0.999;
   this.bullets = [];
 
 
@@ -46,7 +46,7 @@ function Ship() {
   this.display = function() {
     stroke(255);
     noFill();
-    push();
+    push(); // creating new coordinate matrix
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);

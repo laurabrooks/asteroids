@@ -19,15 +19,16 @@ function Game() {
   this.getScore = function() {
     return this.lives;
   };
-  this.addScore = function(type) {
-    switch (type) {
-      case 'collision':
-        this.score += 20;
-        break;
-      case 'shot':
-        this.score += 100;
-        break;
-    }
+  this.addScore = function(pts) {
+    // switch (type) {
+    //   case 'collision':
+    //     this.score += 20;
+    //     break;
+    //   case 'shot':
+    //     this.score += 100;
+    //     break;
+    // }
+    this.score += pts;
   };
   this.reset = function() {
     this.score = 0;
