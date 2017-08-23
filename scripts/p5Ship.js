@@ -62,6 +62,5 @@ function Ship() {
   this.shoot = function() {
     this.bullets[this.bullets.length] = new Bullet(this.position.x+width/2, this.position.y+height/2, this.theta); // add a bullet
     this.bullets[this.bullets.length-1].fire();
-    console.log('shooting');
   }
 }

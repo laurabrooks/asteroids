@@ -71,11 +71,11 @@ function checkShipCollisions() {
     // collide functions return a bool for whether these objects are colliding
     hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
     if (hit) {
-      explodeAstroid(i);
+      explodeasteroid(i);
+      console.log('COLLIDE asteroid ' + i);
       game.addScore('collision');
       game.loseLife();
       centerShip();
-      console.log('HIT ' + i + ' lives' + game.getLives() );
       hit = false;
     }
   }
@@ -86,40 +86,55 @@ function checkBulletCollisions() {
   var hit = false;
 
   for (var i = 0; i < myShip.bullets.length; i++) {
-    for (var j = 0; j < NUM_AST; j++) {
+    if (myShip.bullets[i].active) {
+      for (var j = 0; j < NUM_AST; j++) {
 
-      // collide functions return a bool for whether these objects are colliding
-      hit = collideCircleCircle(
-        asteroids[j].position.x, asteroids[j].position.y,
-        asteroids[j].diameter,
-        myShip.bullets[i].position.x, myShip.bullets[i].position.y,
-        myShip.bullets[i].diameter
-      )
-      if (hit) {
-        console.log('SHOT');
-        explodeAstroid(j);
-        game.addScore('shot');
-        console.log('HIT asteroid' + j + ' bullet ' + i);
-        hit = false;
+        // collide functions return a bool for whether these objects are colliding
+        hit = collideCircleCircle(
+          asteroids[j].position.x, asteroids[j].position.y,
+          asteroids[j].diameter,
+          myShip.bullets[i].position.x, myShip.bullets[i].position.y,
+          myShip.bullets[i].diameter
+        )
+        if (hit) {
+          console.log('SHOT asteroid ' + j);
+          console.log('with bullet ' + i);
+          explodeasteroid(j);
+          game.addScore('shot');
+          hit = false;
+          // remove bullet so it doesn't hit another
+          // myShip.bullets.splice(i, 1);
+          myShip.bullets[i].active = false;
+          break;
+        }
       }
     }
   }
 }
 
-function explodeAstroid(index) {
-  var randomOffset = 15;
-  var newAst1 = new Asteroid();
-  newAst1.diameter = asteroids[index].diameter/2;
-  newAst1.timeOffset = 0;
-  newAst1.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
-  newAst1.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
-  var newAst2 = new Asteroid();
-  newAst2.diameter = asteroids[index].diameter/2;
-  newAst2.timeOffset = 0;
-  newAst2.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
-  newAst2.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
+function explodeasteroid(index) {
+  console.log(`index in explode function ${index}`);
+  if (asteroids[index].diameter > 80) {
+    var randomOffset = 15;
+    var newAst1 = new Asteroid();
+    newAst1.diameter = asteroids[index].diameter/2;
+    newAst1.timeOffset = 0;
+    newAst1.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
+    newAst1.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
+    var newAst2 = new Asteroid();
+    newAst2.diameter = asteroids[index].diameter/2;
+    newAst2.timeOffset = 0;
+    newAst2.position.x = asteroids[index].position.x + random(-randomOffset, randomOffset);
+    newAst2.position.y = asteroids[index].position.y + random(-randomOffset, randomOffset);
 
-  asteroids.splice(index, 1, newAst1, newAst2);
+    asteroids.splice(index, 1, newAst1, newAst2);
+  }
+  else {
+    var newAst = new Asteroid();
+    asteroids[index] = newAst;
+  }
+  console.log('asteroids length '+ asteroids.length + ' end of explode function');
+  console.log(asteroids);
 }
 
 function keyPressed() {
@@ -137,15 +152,18 @@ function handleAsteroids() {
   for (var i = 0; i < NUM_AST; i++) {
     if (asteroids[i].position.x > (width+asteroids[i].diameter/2) || asteroids[i].position.x < -(asteroids[i].diameter/2)) {
       asteroids[i] = new Asteroid();
+      text(i, asteroids[i].position.x, asteroids[i].position.y);
     }
     if (asteroids[i].position.y > (height+asteroids[i].diameter/2) || asteroids[i].position.y < -(asteroids[i].diameter/2)) {
       asteroids[i] = new Asteroid();
+      text(i, asteroids[i].position.x, asteroids[i].position.y);
     }
   }
 }
 
 function displayScore() {
   fill(255);
+  textAlign(LEFT);
   textFont('monospace', 40);
   text(game.score, 40, 40);
 }

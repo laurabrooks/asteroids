@@ -3,6 +3,7 @@ function Bullet(x, y, theta) {
   this.velocity = createVector(1, 0);
   this.theta = theta;
   this.diameter = 2;
+  this.active = true;
 
   // initial fire
   // set up this bullet's vectors based on ship position at fire time
@@ -18,8 +19,10 @@ function Bullet(x, y, theta) {
 
   // draw bullet on canvas
   this.display = function() {
-    stroke(255);
-    noFill();
-    ellipse(this.position.x, this.position.y, this.diameter);
+    if (this.active) {
+      stroke(255);
+      noFill();
+      ellipse(this.position.x, this.position.y, this.diameter);
+    }
   };
 }
