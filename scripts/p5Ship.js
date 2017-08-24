@@ -20,6 +20,7 @@ function Ship() {
   this.thrust = function(starting) {
     if (starting) {
       this.acceleration = createVector(this.accelIncr*cos(this.theta), this.accelIncr*sin(this.theta), 0);
+      this.displayThrust();
     }
     else { //key up, stopping motion
       this.acceleration = createVector(0,0);
@@ -61,8 +62,23 @@ function Ship() {
       this.bullets[i].move();
       this.bullets[i].display();
     }
-
   };
+
+  this.displayThrust = function() {
+    console.log('thrust');
+    push(); // creating new coordinate matrix
+    translate(width / 2, height / 2); // make these calculations relative to the center of canvas
+    translate(this.position.x, this.position.y); // then ship's position
+    rotate(this.theta + HALF_PI);
+    if (frameCount%frameRate() > frameRate()/2) noStroke(); // make text flash
+    else stroke(255);
+    triangle(
+      -this.scaleFactor/2, this.scaleFactor,
+      0, 2*this.scaleFactor,
+      this.scaleFactor/2, this.scaleFactor);
+    pop();
+    stroke(255);
+  }
 
   this.shoot = function() {
     this.bullets[this.bullets.length] = new Bullet(this.position.x+width/2, this.position.y+height/2, this.theta); // add a bullet
