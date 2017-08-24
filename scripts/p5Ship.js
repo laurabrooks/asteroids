@@ -8,7 +8,7 @@ function Ship() {
   this.thetaIncr = 0.1;
   this.drag = 0.995;
   this.bullets = [];
-  this.scaleFactor = Math.min(width, height)/20;
+  this.scaleFactor = Math.min(width, height)/50;
 
 
   this.turn = function(direction) {

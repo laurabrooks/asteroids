@@ -1,7 +1,7 @@
 var game;
 var myShip;
 var asteroids = [];
-const NUM_AST = 1; //10
+var initialNumAst;
 const COLLISION_PTS = 20;
 var pixelated;
 var tutorialEnded = false;
@@ -17,14 +17,15 @@ function setup() {
   var asteroidCanvas = createCanvas(window.innerWidth, window.innerHeight); // create game canvas
   asteroidCanvas.parent('canvas-container');   // append game canvas to DOM container
 
+  initialNumAst = Math.floor(Math.max(width, height)/100);
+  asteroidCap = 2*initialNumAst;
+
   // create game, ship and asteroids
   game = new Game();
   myShip = new Ship();
-  for (let i = 0; i < NUM_AST; i++) {
+  for (let i = 0; i < initialNumAst; i++) {
     asteroids[i] = new Asteroid();
   }
-
-  collideDebug(true);
 }
 
 function draw() {
@@ -215,31 +216,30 @@ function steerShip() {
 
 // uses p5 collide2d library to check if ship is colliding with asteroids
 function checkShipCollisions() {
+  // finding ship's vertices by pretending the vertex is a point on a circle
+  // rotating around center point of ship
+  // see algorithm at https://stackoverflow.com/questions/839899/how-do-i-calculate-a-point-on-a-circle-s-circumference
   triPoly = [
+    // front vertex
     createVector(
-      ((myShip.position.x-myShip.scaleFactor)*(cos(-myShip.theta))),
-      (myShip.position.y+myShip.scaleFactor)*sin(-myShip.theta)),
+      (myShip.position.x + 2*myShip.scaleFactor * cos(myShip.theta)),
+      (myShip.position.y + 2*myShip.scaleFactor * sin(myShip.theta)) ),
+    // bottom left
     createVector(
-      (myShip.position.x+0)*cos(myShip.theta)*cos(myShip.theta),
-      (myShip.position.y-(2*myShip.scaleFactor))*sin(myShip.theta) ),
+      (myShip.position.x + -myShip.scaleFactor*Math.sqrt(2) * cos(myShip.theta+PI/4)),
+      (myShip.position.y + -myShip.scaleFactor*Math.sqrt(2) * sin(myShip.theta+PI/4)) ),
+    // bottom right
     createVector(
-      (myShip.position.x+myShip.scaleFactor)*cos(myShip.theta),
-      (myShip.position.y+myShip.scaleFactor)*sin(myShip.theta) )
+      (myShip.position.x + -myShip.scaleFactor*Math.sqrt(2) * cos(myShip.theta-PI/4)),
+      (myShip.position.y + -myShip.scaleFactor*Math.sqrt(2) * sin(myShip.theta-PI/4)) )
   ];
 
   var hit = false;
 
-  for (var i = 0; i < asteroids.length; i++) { //NUM_AST
+  for (var i = 0; i < asteroids.length; i++) {
     if ((frameCount - asteroids[i].timeStart) > asteroids[i].timeOffset) {
     // collide functions return a bool for whether these objects are colliding
       hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
-      stroke(255, 0, 0); //red
-      ellipse(triPoly[0].x + width/2, triPoly[0].y + height/2, 10, 10);
-      stroke(0, 255, 0); //blue
-      ellipse(triPoly[1].x + width/2, triPoly[1].y + height/2, 10, 10);
-      stroke(0, 0, 255); //green
-      ellipse(triPoly[2].x + width/2, triPoly[2].y + height/2, 10, 10);
-      stroke(255);
 
       if (hit) {
         explodeAsteroid(i);
@@ -258,7 +258,7 @@ function checkBulletCollisions() {
 
   for (var i = 0; i < myShip.bullets.length; i++) {
     if (myShip.bullets[i].active) {
-      for (var j = 0; j < asteroids.length; j++) { //NUM_AST
+      for (var j = 0; j < asteroids.length; j++) {
 
         // collide functions return a bool for whether these objects are colliding
         hit = collideCircleCircle(
@@ -319,14 +319,16 @@ function keyPressed() {
 
 function handleAsteroids() {
   // don't go off in random directions forever
-  for (var i = 0; i < asteroids.length; i++) { //NUM_AST
-    if (asteroids[i].position.x > (width+asteroids[i].diameter/2) || asteroids[i].position.x < -(asteroids[i].diameter/2)) {
+  for (var i = 0; i < asteroids.length; i++) {
+    if ( (asteroids[i].position.x > (width+asteroids[i].diameter/2) || asteroids[i].position.x < -(asteroids[i].diameter/2))  //off in x direction
+      || (asteroids[i].position.y > (height+asteroids[i].diameter/2) || asteroids[i].position.y < -(asteroids[i].diameter/2)) //off in y direction
+       ) {
       asteroids[i] = new Asteroid();
-      text(i, asteroids[i].position.x, asteroids[i].position.y);
-    }
-    if (asteroids[i].position.y > (height+asteroids[i].diameter/2) || asteroids[i].position.y < -(asteroids[i].diameter/2)) {
-      asteroids[i] = new Asteroid();
-      text(i, asteroids[i].position.x, asteroids[i].position.y);
+      // don't make a new one if asteroid cap has been reached
+      // this is not the best way to handle keeping a reasonable number of asteroids
+      if (i >= asteroidCap) {
+        asteroids.splice(i, 1);
+      }
     }
   }
 }
@@ -367,11 +369,11 @@ function gameOver() {
   if (keyIsDown(ENTER)) {
     game.reset();
     game.state = 2;
-    for (let i = 0; i < NUM_AST; i++) {
+    for (let i = 0; i < initialNumAst; i++) {
       delete asteroids[i];
       asteroids[i] = new Asteroid();
     }
-    asteroids.length = NUM_AST;
+    asteroids.length = initialNumAst;
   }
 }
 
