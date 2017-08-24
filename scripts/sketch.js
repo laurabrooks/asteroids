@@ -8,6 +8,7 @@ var tutorialEnded = false;
 var tutorialTimerStarted = false;
 var tutorialCounter = 0;
 var tutorialMode = 0;
+var brightMode = false;
 
 var shootSound, thrustSound, bangSmall, bangMedium, bangLarge;
 
@@ -118,6 +119,7 @@ function tutorial() {
 }
 
 function displayDirectionKeys() {
+  stroke(255);
   rectMode(CENTER);
   // up arrow
   rect(width/2, height-(height*0.1) - 75, 50, 50);
@@ -175,16 +177,17 @@ function displayDirectionKeys() {
 }
 
 function displaySpace() {
-    rectMode(CENTER);
-    rect(width/2, height-(height*0.1), 400, 50);
+  stroke(255);  
+  rectMode(CENTER);
+  rect(width/2, height-(height*0.1), 400, 50);
 
-    push()
-    translate(width/2, height-(height*0.1));
-    fill(255);
-    textAlign(CENTER);
-    textFont('monospace', 16);
-    text('space to shoot', 0, 6);
-    pop()
+  push()
+  translate(width/2, height-(height*0.1));
+  fill(255);
+  textAlign(CENTER);
+  textFont('monospace', 16);
+  text('space to shoot', 0, 6);
+  pop()
 }
 
 function gamePlay() {
@@ -343,6 +346,10 @@ function keyPressed() {
       return false;
     }
   }
+  // toggle brightMode (colored shapes)
+  if (keyCode === 67) {
+    brightMode = (brightMode) ? false : true;
+  }
 }
 
 function handleAsteroids() {
@@ -362,7 +369,7 @@ function handleAsteroids() {
 }
 
 function displayScore() {
-  fill(255);
+  (brightMode) ? fill(200,255,200) : fill(255);
   textAlign(LEFT);
   textFont('monospace', 40);
   text(game.score, 40, 40);

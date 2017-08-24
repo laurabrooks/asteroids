@@ -46,7 +46,7 @@ function Ship() {
 
   // draw ship on canvas
   this.display = function() {
-    stroke(255);
+    (brightMode) ? stroke(0,0,255) : stroke(255);
     noFill();
     push(); // creating new coordinate matrix
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
@@ -70,13 +70,14 @@ function Ship() {
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);
     if (frameCount%(frameRate()*4) > frameRate()*2) noStroke(); // make trail flash
-    else stroke(255);
+    else (brightMode) ? stroke(255,99,71) : stroke(255);
     triangle(
       -this.scaleFactor/2, this.scaleFactor,
       0, 2*this.scaleFactor,
       this.scaleFactor/2, this.scaleFactor);
     pop();
     stroke(255);
+    this.display(); //hacky way to make sure trail is behind ship
   }
 
   this.shoot = function() {
