@@ -70,7 +70,7 @@ function Ship() {
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);
-    if (frameCount%frameRate() > frameRate()/2) noStroke(); // make text flash
+    if (frameCount%(frameRate()*4) > frameRate()*2) noStroke(); // make trail flash
     else stroke(255);
     triangle(
       -this.scaleFactor/2, this.scaleFactor,
