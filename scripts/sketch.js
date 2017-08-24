@@ -4,8 +4,10 @@ var asteroids = [];
 const NUM_AST = 10;
 const COLLISION_PTS = 20;
 var pixelated;
-var tutorialStarted = false;
+var tutorialEnded = false;
+var tutorialTimerStarted = false;
 var tutorialCounter = 0;
+var tutorialMode = 0;
 
 function preload() {
   pixelated = loadFont('pixelated_font/pixelated.ttf');
@@ -50,18 +52,45 @@ function tutorial() {
   myShip.display();
   steerShip();
 
-  if ( (!tutorialStarted) &&
-       (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) ) {
-    tutorialStarted = true;
-    tutorialCounter = frameCount;
-    console.log(`tutorialStarted ${tutorialStarted}`);
+  displayTutorial();
+
+}
+
+function displayTutorial() {
+  if (!tutorialEnded) {
+    if (tutorialMode === 0) displayDirectionKeys();
+    else if (tutorialMode === 1) displaySpace();
+  } else {
+    console.log('tutorial ended');
   }
-  if (tutorialStarted && (frameCount - tutorialCounter < 150) ) {
-    directionKeys();
+
+  if ( (!tutorialTimerStarted) && tutorialMode === 0) {
+    if (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) {
+      tutorialTimerStarted = true;
+      tutorialCounter = frameCount;
+      console.log(`arrow tutorialTimerStarted ${tutorialTimerStarted}`);
+      console.log(tutorialCounter);
+    }
+  }
+  else if ( (!tutorialTimerStarted) && tutorialMode === 1) {
+    if (keyIsDown(32)) {
+      tutorialTimerStarted = true;
+      tutorialCounter = frameCount;
+      console.log(`space tutorialTimerStarted ${tutorialTimerStarted}`);
+      console.log(tutorialCounter);
+    }
+  }
+
+  if ((tutorialCounter) && (frameCount - (frameRate()*5) > tutorialCounter)) {
+    tutorialEnded = true;
+    tutorialMode++;
+    tutorialEnded = false;
+    tutorialCounter = 0;
+    tutorialTimerStarted = false;
   }
 }
 
-function directionKeys() {
+function displayDirectionKeys() {
   rectMode(CENTER);
   // up arrow
   rect(width/2, height-(height*0.1) - 75, 50, 50);
@@ -116,6 +145,19 @@ function directionKeys() {
   endShape();
   pop();
   pop();
+}
+
+function displaySpace() {
+    rectMode(CENTER);
+    rect(width/2, height-(height*0.1), 400, 50);
+
+    push()
+    translate(width/2, height-(height*0.1));
+    fill(255);
+    textAlign(CENTER);
+    textFont('monospace', 16);
+    text('space to shoot', 0, 6);
+    pop()
 }
 
 function gamePlay() {

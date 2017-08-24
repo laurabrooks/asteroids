@@ -6,7 +6,7 @@ function Ship() {
   this.theta = 3*PI / 2;
   this.accelIncr = 0.1;
   this.thetaIncr = 0.1;
-  this.drag = 0.999;
+  this.drag = 0.995;
   this.bullets = [];
 
 
