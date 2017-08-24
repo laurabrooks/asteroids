@@ -392,7 +392,17 @@ function centerShip() {
 function gameOver() {
   game.state = 3;
 
+  if (localStorage.getItem('highScore') === null) {
+    localStorage.setItem('highScore', game.score);
+  }
+  else if (game.score > localStorage.getItem('highScore')) {
+    localStorage.setItem('highScore', game.score);
+    console.log('new high score!');
+  }
+
   displayGameOver();
+
+  console.log(localStorage.getItem('highScore'));
 
   if (keyIsDown(ENTER)) {
     game.reset();
@@ -413,12 +423,15 @@ function displayGameOver() {
   else textFont(pixelated, 100);
   if (frameCount%45 > 22) fill(0); // make text flash
   else fill(255);
-  text('GAMEOVER', width/2, height/2-150);
+  text('GAMEOVER', width/2, height/2-100);
 
   fill(255);
   textFont('monospace', 40);
-  text(`SCORE ${game.score}`, width/2, height/2-20);
+  textAlign(LEFT);
+  text(`YOUR SCORE: ${game.score}`, width/2 - 230, height/2-25);
+  text(`HIGH SCORE: ${localStorage.getItem('highScore')}`, width/2 - 230, height/2+10);
+  textAlign(CENTER);
   if (frameCount%45 > 22) fill(0); // make text flash
   else fill(255);
-  text("press 'enter' to play again", width/2, height/2+40);
+  text("press 'enter' to play again", width/2, height/2+90);
 }
