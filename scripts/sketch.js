@@ -366,6 +366,18 @@ function displayScore() {
   textAlign(LEFT);
   textFont('monospace', 40);
   text(game.score, 40, 40);
+
+  textAlign(RIGHT);
+  textFont('monospace', 20);
+
+  if (localStorage.getItem('highScore') === null) {
+    localStorage.setItem('highScore', 0);
+  }
+  else if (game.score > localStorage.getItem('highScore')) {
+    localStorage.setItem('highScore', game.score);
+  }
+  text(`HIGH SCORE: ${localStorage.getItem('highScore')}`, width-40, 30);
+
 }
 
 function displayLives() {
@@ -391,14 +403,6 @@ function centerShip() {
 
 function gameOver() {
   game.state = 3;
-
-  if (localStorage.getItem('highScore') === null) {
-    localStorage.setItem('highScore', game.score);
-  }
-  else if (game.score > localStorage.getItem('highScore')) {
-    localStorage.setItem('highScore', game.score);
-    console.log('new high score!');
-  }
 
   displayGameOver();
 
