@@ -10,7 +10,7 @@ var tutorialCounter = 0;
 var tutorialMode = 0;
 
 function preload() {
-  pixelated = loadFont('pixelated_font/pixelated.ttf');
+  pixelated = loadFont('assets/pixelated_font/pixelated.ttf');
 }
 
 function setup() {
