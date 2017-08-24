@@ -1,7 +1,7 @@
 var game;
 var myShip;
 var asteroids = [];
-const NUM_AST = 10;
+const NUM_AST = 1; //10
 const COLLISION_PTS = 20;
 var pixelated;
 var tutorialEnded = false;
@@ -31,16 +31,42 @@ function draw() {
   background(0);
 
   switch (game.state) {
-    case 0: //instructions
+    case 0: // start screen
+      start();
+      break;
+    case 1: // instructions
       tutorial();
       break;
-    case 1: //playing
+    case 2: // playing
       gamePlay();
       break;
-    case 2: //game over
+    case 3: // game over
       gameOver();
       break;
   }
+}
+
+function start() {
+  displayBeginGame();
+  if (keyIsDown(ENTER)) {
+    game.state++; // go to tutorial
+  }
+}
+
+function displayBeginGame() {
+  background(0);
+  textAlign(CENTER);
+  fill(255);
+  stroke(255);
+  if (frameCount%45 > 22) fill(0); // make text flash
+  else fill(255);
+  if (width > 1200) textFont(pixelated, 200);
+  else textFont(pixelated, 100);
+  text('ASTEROIDS', width/2, height/2-100);
+
+  textFont('monospace', 40);
+  fill(255);
+  text("press 'enter' to play", width/2, height/2+40);
 }
 
 function tutorial() {
@@ -52,29 +78,23 @@ function tutorial() {
   myShip.display();
   steerShip();
 
-  if (tutorialMode === 2) game.state = 1; // enter play mode after tutorial
+  if (tutorialMode === 2) game.state = 2; // enter play mode after tutorial
   else {
     if (!tutorialEnded) {
       if (tutorialMode === 0) displayDirectionKeys();
       else if (tutorialMode === 1) displaySpace();
-    } else {
-      console.log('tutorial ended');
     }
 
     if ( (!tutorialTimerStarted) && tutorialMode === 0) {
       if (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) {
         tutorialTimerStarted = true;
         tutorialCounter = frameCount;
-        console.log(`arrow tutorialTimerStarted ${tutorialTimerStarted}`);
-        console.log(tutorialCounter);
       }
     }
     else if ( (!tutorialTimerStarted) && tutorialMode === 1) {
       if (keyIsDown(32)) {
         tutorialTimerStarted = true;
         tutorialCounter = frameCount;
-        console.log(`space tutorialTimerStarted ${tutorialTimerStarted}`);
-        console.log(tutorialCounter);
       }
     }
 
@@ -195,16 +215,34 @@ function steerShip() {
 
 // uses p5 collide2d library to check if ship is colliding with asteroids
 function checkShipCollisions() {
-  triPoly = [createVector(myShip.position.x-10, myShip.position.y+10), createVector(myShip.position.x+0, myShip.position.y-20), createVector(myShip.position.x+10, myShip.position.y+10) ];
+  triPoly = [
+    createVector(
+      ((myShip.position.x-myShip.scaleFactor)*(cos(-myShip.theta))),
+      (myShip.position.y+myShip.scaleFactor)*sin(-myShip.theta)),
+    createVector(
+      (myShip.position.x+0)*cos(myShip.theta)*cos(myShip.theta),
+      (myShip.position.y-(2*myShip.scaleFactor))*sin(myShip.theta) ),
+    createVector(
+      (myShip.position.x+myShip.scaleFactor)*cos(myShip.theta),
+      (myShip.position.y+myShip.scaleFactor)*sin(myShip.theta) )
+  ];
+
   var hit = false;
 
   for (var i = 0; i < asteroids.length; i++) { //NUM_AST
     if ((frameCount - asteroids[i].timeStart) > asteroids[i].timeOffset) {
     // collide functions return a bool for whether these objects are colliding
       hit = collideCirclePoly(asteroids[i].position.x - width/2,asteroids[i].position.y - height/2,asteroids[i].diameter, triPoly)
+      stroke(255, 0, 0); //red
+      ellipse(triPoly[0].x + width/2, triPoly[0].y + height/2, 10, 10);
+      stroke(0, 255, 0); //blue
+      ellipse(triPoly[1].x + width/2, triPoly[1].y + height/2, 10, 10);
+      stroke(0, 0, 255); //green
+      ellipse(triPoly[2].x + width/2, triPoly[2].y + height/2, 10, 10);
+      stroke(255);
+
       if (hit) {
         explodeAsteroid(i);
-        console.log('COLLIDE asteroid ' + i);
         game.addScore(COLLISION_PTS);
         game.loseLife();
         centerShip();
@@ -230,8 +268,6 @@ function checkBulletCollisions() {
           myShip.bullets[i].diameter
         )
         if (hit) {
-          console.log('SHOT asteroid ' + j);
-          console.log('with bullet ' + i);
           explodeAsteroid(j);
           game.addScore(100 + asteroids[j].diameter - asteroids[j].diameter%20);
           hit = false;
@@ -248,7 +284,6 @@ function checkBulletCollisions() {
 // if the asteroid is below a certain size, it just is regenerated as a new, random asteroid in start position
 // if it is large enough, it gets split into two asteroids of half diameter
 function explodeAsteroid(index) {
-  console.log(`index in explode function ${index}`);
   if (asteroids[index].diameter > 80) {
     var randomOffset = 15;
     var newAst1 = new Asteroid();
@@ -265,19 +300,16 @@ function explodeAsteroid(index) {
     asteroids.splice(index, 1, newAst1, newAst2);
   }
   else {
-    console.log('diameter less than= 80');
     var newAst = new Asteroid();
     delete asteroids[index];
     asteroids[index] = newAst;
   }
-  console.log('asteroids length '+ asteroids.length + ' end of explode function');
-  console.log(asteroids);
 }
 
 // handles space bar shooting
 function keyPressed() {
   // if we're in play mode or tutorial mode but at second part
-  if ( (game.state === 1) || (game.state === 0 && tutorialMode === 1) ) {
+  if ( (game.state === 2) || (game.state === 1 && tutorialMode === 1) ) {
     if (keyCode === 32) { // space bar
       myShip.shoot();
       return false;
@@ -328,12 +360,27 @@ function centerShip() {
 }
 
 function gameOver() {
-  game.state = 2;
+  game.state = 3;
 
+  displayGameOver();
+
+  if (keyIsDown(ENTER)) {
+    game.reset();
+    game.state = 2;
+    for (let i = 0; i < NUM_AST; i++) {
+      delete asteroids[i];
+      asteroids[i] = new Asteroid();
+    }
+    asteroids.length = NUM_AST;
+  }
+}
+
+function displayGameOver() {
   background(0);
   textAlign(CENTER);
   fill(255);
-  textFont(pixelated, 200);
+  if (width > 1200) textFont(pixelated, 200);
+  else textFont(pixelated, 100);
   if (frameCount%45 > 22) fill(0); // make text flash
   else fill(255);
   text('GAMEOVER', width/2, height/2-150);
@@ -344,15 +391,4 @@ function gameOver() {
   if (frameCount%45 > 22) fill(0); // make text flash
   else fill(255);
   text("press 'enter' to play again", width/2, height/2+40);
-
-  if (keyIsDown(ENTER)) {
-    console.log('entered to restart');
-    game.reset();
-    game.state = 1;
-    for (let i = 0; i < NUM_AST; i++) {
-      delete asteroids[i];
-      asteroids[i] = new Asteroid();
-    }
-    asteroids.length = NUM_AST;
-  }
 }

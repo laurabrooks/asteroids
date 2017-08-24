@@ -8,6 +8,7 @@ function Ship() {
   this.thetaIncr = 0.1;
   this.drag = 0.995;
   this.bullets = [];
+  this.scaleFactor = Math.min(width, height)/20;
 
 
   this.turn = function(direction) {
@@ -50,7 +51,11 @@ function Ship() {
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
     translate(this.position.x, this.position.y); // then ship's position
     rotate(this.theta + HALF_PI);
-    triangle(-10, 10, 0, -20, 10, 10);
+    triangle(
+      -this.scaleFactor, this.scaleFactor,
+      0, -2*this.scaleFactor,
+      this.scaleFactor, this.scaleFactor);
+    // triangle(-10, 10, 0, -20, 10, 10);
     pop();
     for (var i = 0; i < this.bullets.length; i++) {
       this.bullets[i].move();
