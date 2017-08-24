@@ -52,41 +52,39 @@ function tutorial() {
   myShip.display();
   steerShip();
 
-  displayTutorial();
-
-}
-
-function displayTutorial() {
-  if (!tutorialEnded) {
-    if (tutorialMode === 0) displayDirectionKeys();
-    else if (tutorialMode === 1) displaySpace();
-  } else {
-    console.log('tutorial ended');
-  }
-
-  if ( (!tutorialTimerStarted) && tutorialMode === 0) {
-    if (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) {
-      tutorialTimerStarted = true;
-      tutorialCounter = frameCount;
-      console.log(`arrow tutorialTimerStarted ${tutorialTimerStarted}`);
-      console.log(tutorialCounter);
+  if (tutorialMode === 2) game.state = 1; // enter play mode after tutorial
+  else {
+    if (!tutorialEnded) {
+      if (tutorialMode === 0) displayDirectionKeys();
+      else if (tutorialMode === 1) displaySpace();
+    } else {
+      console.log('tutorial ended');
     }
-  }
-  else if ( (!tutorialTimerStarted) && tutorialMode === 1) {
-    if (keyIsDown(32)) {
-      tutorialTimerStarted = true;
-      tutorialCounter = frameCount;
-      console.log(`space tutorialTimerStarted ${tutorialTimerStarted}`);
-      console.log(tutorialCounter);
-    }
-  }
 
-  if ((tutorialCounter) && (frameCount - (frameRate()*5) > tutorialCounter)) {
-    tutorialEnded = true;
-    tutorialMode++;
-    tutorialEnded = false;
-    tutorialCounter = 0;
-    tutorialTimerStarted = false;
+    if ( (!tutorialTimerStarted) && tutorialMode === 0) {
+      if (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) {
+        tutorialTimerStarted = true;
+        tutorialCounter = frameCount;
+        console.log(`arrow tutorialTimerStarted ${tutorialTimerStarted}`);
+        console.log(tutorialCounter);
+      }
+    }
+    else if ( (!tutorialTimerStarted) && tutorialMode === 1) {
+      if (keyIsDown(32)) {
+        tutorialTimerStarted = true;
+        tutorialCounter = frameCount;
+        console.log(`space tutorialTimerStarted ${tutorialTimerStarted}`);
+        console.log(tutorialCounter);
+      }
+    }
+
+    if ((tutorialCounter) && (frameCount - (frameRate()*5) > tutorialCounter)) {
+      tutorialEnded = true;
+      tutorialMode++;
+      tutorialEnded = false;
+      tutorialCounter = 0;
+      tutorialTimerStarted = false;
+    }
   }
 }
 
@@ -180,7 +178,7 @@ function gamePlay() {
   checkBulletCollisions();
   handleAsteroids();
 
-  if (game.getLives() === 0) gameOver();
+  if (game.getLives() < 1) gameOver();
 }
 
 // takes user input for arrow keys and steers the ship
@@ -278,7 +276,8 @@ function explodeAsteroid(index) {
 
 // handles space bar shooting
 function keyPressed() {
-  if (game.state === 1) {
+  // if we're in play mode or tutorial mode but at second part
+  if ( (game.state === 1) || (game.state === 0 && tutorialMode === 1) ) {
     if (keyCode === 32) { // space bar
       myShip.shoot();
       return false;
@@ -329,7 +328,6 @@ function centerShip() {
 }
 
 function gameOver() {
-  hits = [];
   game.state = 2;
 
   background(0);
@@ -348,7 +346,13 @@ function gameOver() {
   text("press 'enter' to play again", width/2, height/2+40);
 
   if (keyIsDown(ENTER)) {
+    console.log('entered to restart');
     game.reset();
     game.state = 1;
+    for (let i = 0; i < NUM_AST; i++) {
+      delete asteroids[i];
+      asteroids[i] = new Asteroid();
+    }
+    asteroids.length = NUM_AST;
   }
 }
