@@ -65,7 +65,6 @@ function Ship() {
   };
 
   this.displayThrust = function() {
-    console.log('thrust');
     push(); // creating new coordinate matrix
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
     translate(this.position.x, this.position.y); // then ship's position

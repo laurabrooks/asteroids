@@ -9,8 +9,16 @@ var tutorialTimerStarted = false;
 var tutorialCounter = 0;
 var tutorialMode = 0;
 
+var shootSound, thrustSound, bangSmall, bangMedium, bangLarge;
+
 function preload() {
   pixelated = loadFont('assets/pixelated_font/pixelated.ttf');
+  soundFormats('wav');
+  shootSound = loadSound('assets/sounds/fire.wav');
+  thrustSound = loadSound('assets/sounds/thrust.wav');
+  bangSmall = loadSound('assets/sounds/bangSmall.wav');
+  bangMedium = loadSound('assets/sounds/bangMedium.wav');
+  bangLarge = loadSound('assets/sounds/bangLarge.wav');
 }
 
 function setup() {
@@ -207,6 +215,8 @@ function steerShip() {
 
   if (keyIsDown(UP_ARROW)) { // thrust forward if arrow is pressed
     myShip.thrust(true);
+    thrustSound.setVolume(2);
+    thrustSound.play();
   } else {                   // stop thrusting when arrow is released
     myShip.thrust(false);
   }
@@ -247,6 +257,11 @@ function checkShipCollisions() {
         game.loseLife();
         centerShip();
         hit = false;
+        var size = '';
+        if (asteroids[i].diameter > 233) size = 'Large';
+        else if (asteroids[i].diameter > 166) size = 'Medium';
+        else size = 'Small';
+        playHitSound(size);
       }
     }
   }
@@ -271,6 +286,11 @@ function checkBulletCollisions() {
           explodeAsteroid(j);
           game.addScore(100 + asteroids[j].diameter - asteroids[j].diameter%20);
           hit = false;
+          var size = '';
+          if (asteroids[j].diameter > 233) size = 'Large';
+          else if (asteroids[j].diameter > 166) size = 'Medium';
+          else size = 'Small';
+          playHitSound(size);
           // remove bullet so it doesn't hit another
           myShip.bullets[i].active = false;
           break;
@@ -278,6 +298,12 @@ function checkBulletCollisions() {
       }
     }
   }
+}
+
+function playHitSound(size) {
+  var filename = `bang${size}`
+  window[filename].setVolume(2);
+  window[filename].play();
 }
 
 // called when there is a bullet or ship collision with an asteroid
@@ -311,6 +337,8 @@ function keyPressed() {
   // if we're in play mode or tutorial mode but at second part
   if ( (game.state === 2) || (game.state === 1 && tutorialMode === 1) ) {
     if (keyCode === 32) { // space bar
+      shootSound.setVolume(2);
+      shootSound.play();
       myShip.shoot();
       return false;
     }
