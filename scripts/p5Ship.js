@@ -81,7 +81,11 @@ function Ship() {
   }
 
   this.shoot = function() {
-    this.bullets[this.bullets.length] = new Bullet(this.position.x+width/2, this.position.y+height/2, this.theta); // add a bullet
+    this.bullets[this.bullets.length] = new Bullet(
+      (this.position.x + 2*this.scaleFactor * cos(this.theta))+width/2,
+      (this.position.y + 2*this.scaleFactor * sin(this.theta))+height/2,
+
+      this.theta); // add a bullet
     this.bullets[this.bullets.length-1].fire();
   }
 }
