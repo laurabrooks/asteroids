@@ -4,6 +4,8 @@ var asteroids = [];
 const NUM_AST = 10;
 const COLLISION_PTS = 20;
 var pixelated;
+var tutorialStarted = false;
+var tutorialCounter = 0;
 
 function preload() {
   pixelated = loadFont('pixelated_font/pixelated.ttf');
@@ -40,14 +42,23 @@ function draw() {
 }
 
 function tutorial() {
+
   displayScore();
   displayLives();
 
   myShip.move();
   myShip.display();
+  steerShip();
 
-  directionKeys();
-
+  if ( (!tutorialStarted) &&
+       (keyIsDown(UP_ARROW) || keyIsDown(RIGHT_ARROW) || keyIsDown(LEFT_ARROW)) ) {
+    tutorialStarted = true;
+    tutorialCounter = frameCount;
+    console.log(`tutorialStarted ${tutorialStarted}`);
+  }
+  if (tutorialStarted && (frameCount - tutorialCounter < 150) ) {
+    directionKeys();
+  }
 }
 
 function directionKeys() {
@@ -223,8 +234,8 @@ function explodeAsteroid(index) {
   console.log(asteroids);
 }
 
+// handles space bar shooting
 function keyPressed() {
-  ellipse(0,0, 50);
   if (game.state === 1) {
     if (keyCode === 32) { // space bar
       myShip.shoot();
