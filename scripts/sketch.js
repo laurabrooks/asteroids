@@ -177,7 +177,7 @@ function displayDirectionKeys() {
 }
 
 function displaySpace() {
-  stroke(255);  
+  stroke(255);
   rectMode(CENTER);
   rect(width/2, height-(height*0.1), 400, 50);
 
@@ -429,12 +429,13 @@ function gameOver() {
 function displayGameOver() {
   background(0);
   textAlign(CENTER);
-  fill(255);
+  stroke(255);
   if (width > 1200) textFont(pixelated, 200);
   else textFont(pixelated, 100);
   if (frameCount%45 > 22) fill(0); // make text flash
   else fill(255);
   text('GAMEOVER', width/2, height/2-100);
+  fill(255);
 
   fill(255);
   textFont('monospace', 40);

@@ -10,7 +10,6 @@ function Ship() {
   this.bullets = [];
   this.scaleFactor = Math.min(width, height)/50;
 
-
   this.turn = function(direction) {
     if (direction === 'right') this.theta += this.thetaIncr;
     else this.theta -= this.thetaIncr;
