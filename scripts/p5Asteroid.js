@@ -1,6 +1,5 @@
 function Asteroid() {
   this.diameter = random(100, 300); //random diameter between 20 and 80
-  // this.diameter = random(20, 100); //random diameter between 20 and 80
   this.setStartPos = function() {
     var side = Math.round(Math.random()); //random either 0 or 1
     var offset = this.diameter/2; // amount to offset so asteroid start off screen
@@ -33,10 +32,10 @@ function Asteroid() {
   // draw asteroid on canvas
   this.display = function() {
     if ((frameCount - this.timeStart) > this.timeOffset) {
-      if (this.diameter > 233) (brightMode) ? stroke(185,4,249) : stroke(255);
-      else if (this.diameter > 166) (brightMode) ? stroke(255,0,127) : stroke(255);
-      else if (this.diameter >= 80) (brightMode) ? stroke(255,131,0) : stroke(255);
-      else (brightMode) ? stroke(255,255,0) : stroke(255);
+      if (this.diameter > 233) (brightMode) ? stroke(0,0,255) : stroke(255);
+      else if (this.diameter > 166) (brightMode) ? stroke(185,4,249) : stroke(255);
+      else if (this.diameter >= 80) (brightMode) ? stroke(255,0,127) : stroke(255);
+      else (brightMode) ? stroke(255,131,0) : stroke(255);
       noFill();
       ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
     }

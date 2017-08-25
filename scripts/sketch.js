@@ -387,7 +387,7 @@ function displayScore() {
 
 function displayLives() {
   noFill();
-  (brightMode) ? stroke(0,0,255) : stroke(255);
+  (brightMode) ? stroke(255,255,0) : stroke(255);
   var xOffset = 40;
   var yOffset = 80;
   for (var i = 0; i < game.lives; i++) {
