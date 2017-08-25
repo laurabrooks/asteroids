@@ -45,7 +45,7 @@ function Ship() {
 
   // draw ship on canvas
   this.display = function() {
-    (brightMode) ? stroke(255,255,0) : stroke(255);
+    (brightMode) ? stroke(20,250,203) : stroke(255);
     noFill();
     push(); // creating new coordinate matrix
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas

@@ -20,7 +20,7 @@ function Bullet(x, y, theta) {
   // draw bullet on canvas
   this.display = function() {
     if (this.active) {
-      (brightMode) ? stroke(0,255,0) : stroke(255);
+      (brightMode) ? stroke(20,250,203) : stroke(255);
       noFill();
       ellipse(this.position.x, this.position.y, this.diameter);
     }

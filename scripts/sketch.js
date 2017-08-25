@@ -367,7 +367,7 @@ function handleAsteroids() {
 }
 
 function displayScore() {
-  (brightMode) ? fill(0,255,0) : fill(255);
+  (brightMode) ? fill(20,250,203) : fill(255);
   textAlign(LEFT);
   textFont('monospace', 40);
   text(game.score, 40, 40);
@@ -387,7 +387,7 @@ function displayScore() {
 
 function displayLives() {
   noFill();
-  (brightMode) ? stroke(255,255,0) : stroke(255);
+  (brightMode) ? stroke(20,250,203) : stroke(255);
   var xOffset = 40;
   var yOffset = 80;
   for (var i = 0; i < game.lives; i++) {
