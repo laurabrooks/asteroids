@@ -23,74 +23,74 @@
 
 
 
-## Your process/approach.
+## Process/Approach.
 I organized and prioritized my features using Trello (https://trello.com/b/JQpM1iHF/asteroids). The order of features I implemented was:
- * create p5.js canvas and add it to html file
- * create ship class and add physics to steer it
- * wrap ship around screen
- * create asteroid class as circles that move across the screen
- * in main file, create an array of asteroids
- * check for collisions
- * deal with asteroids going off the screen
- * make asteroids split in half
- * created a game class to hold game states
- * add bullet class and give ship an array of bullets
- * add same collision logic to bullets
- * add lives and game over screen
- * add tutorial mode
- * add animations for throttle
- * create color mode
- * fix lots of bugs along the way
+   * create p5.js canvas and add it to html file
+   * create ship class and add physics to steer it
+   * wrap ship around screen
+   * create asteroid class as circles that move across the screen
+   * in main file, create an array of asteroids
+   * check for collisions
+   * deal with asteroids going off the screen
+   * make asteroids split in half
+   * created a game class to hold game states
+   * add bullet class and give ship an array of bullets
+   * add same collision logic to bullets
+   * add lives and game over screen
+   * add tutorial mode
+   * add animations for throttle
+   * create color mode
+   * fix lots of bugs along the way
 
 
 
-## File Overviews
+  ## File Overviews
 
 
- * ship class
-  * use vectors for theta, position, velocity, and acceleration
-  * https://forum.processing.org/one/topic/move-rotate-paradox.html
-  * display ship as a triangle
-  * make the ship wrap around the edge of the screen
-  * hold an array of bullets
+   * ship class
+    * use vectors for theta, position, velocity, and acceleration
+    * https://forum.processing.org/one/topic/move-rotate-paradox.html
+    * display ship as a triangle
+    * make the ship wrap around the edge of the screen
+    * hold an array of bullets
 
 
- * bullet class
-  * vector for theta, position and velocity
-  * active attribute which is false after bullet collides with an asteroid
-  * methods for displaying
+   * bullet class
+    * vector for theta, position and velocity
+    * active attribute which is false after bullet collides with an asteroid
+    * methods for displaying
 
 
- * asteroid class
-  * create each asteroid at a random position just off the edge of the screen
-  * give each a random diameter, position, velocity and time offset
-  * after time offset, they move across the screen
+   * asteroid class
+    * create each asteroid at a random position just off the edge of the screen
+    * give each a random diameter, position, velocity and time offset
+    * after time offset, they move across the screen
 
 
- * game class
-  * hold state of the game
-   * score
-   * lives
-   * state (start screen, tutorial, play, game over)
-   * reset method
+   * game class
+    * hold state of the game
+     * score
+     * lives
+     * state (start screen, tutorial, play, game over)
+     * reset method
 
 
- * main file / draw loop
-  * draw loop is a switch on game state and calls appropriate functions:
-   * creates a game, player's ship, and array of asteroids
-   * displays start screen
-    * waits for user input then begins tutorial mode
-   * displays overlay of keys and waits for user to try the keys, then gives them 5 seconds to practice before moving on
-   * asteroids enter screen as tutorial ends
+   * main file / draw loop
+    * draw loop is a switch on game state and calls appropriate functions:
+     * creates a game, player's ship, and array of asteroids
+     * displays start screen
+      * waits for user input then begins tutorial mode
+     * displays overlay of keys and waits for user to try the keys, then gives them 5 seconds to practice before moving on
+     * asteroids enter screen as tutorial ends
 
 
-   * check for collisions of ship or bullets and asteroid
-    * check a circle in asteroid position with a triangle/polygon in ship's position using p5.collide2D
-    * also check against all active bullets
-    * explode asteroid
-     * split in two if above a certain diameter
-     * if not, delete this asteroid and regenerate it as a new starting asteroid
-     * play sound based on asteroid size
+     * check for collisions of ship or bullets and asteroid
+      * check a circle in asteroid position with a triangle/polygon in ship's position using p5.collide2D
+      * also check against all active bullets
+      * explode asteroid
+       * split in two if above a certain diameter
+       * if not, delete this asteroid and regenerate it as a new starting asteroid
+       * play sound based on asteroid size
 
 
    * after play loses a life:
@@ -132,6 +132,7 @@ I organized and prioritized my features using Trello (https://trello.com/b/JQpM1
 
 ## Any bugs
 * score algorithm is not very robust
+* asteroid generation and management should be implemented in a more thoughtful way
 * bullets never get deleted, they just are marked inactive - works fine but not memory efficient
 
 
@@ -139,14 +140,9 @@ I organized and prioritized my features using Trello (https://trello.com/b/JQpM1
 * the physics was very hard!
  * I found resources to base the physics of the ship on
  * but I had to figure out the bullets on my own - make sure they have correct theta from ship at time of shot
- * for collision, I found that based on
+ * for collision, I found that the ship was drawn by pushing a new coordinate matrix and rotated the whole coordinate system to drawn
+ *
 
 
 ## Your process for turning that game into a web application (wireframes, blockers/issues that popped up).
-
-
-
-
-
-
-https://trello.com/b/JQpM1iHF/asteroids
+* wireframes
