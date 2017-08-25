@@ -1,5 +1,5 @@
 # Asteroids
-[play here](https://laurabrooks.github.io/asteroids/)
+[play here](https://laurabrooks.github.io/asteroids/) (hint, press 'c' while playing)
 
 
 
