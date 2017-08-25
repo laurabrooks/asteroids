@@ -33,7 +33,10 @@ function Asteroid() {
   // draw asteroid on canvas
   this.display = function() {
     if ((frameCount - this.timeStart) > this.timeOffset) {
-      stroke(255);
+      if (this.diameter > 233) (brightMode) ? stroke(185,4,249) : stroke(255);
+      else if (this.diameter > 166) (brightMode) ? stroke(255,0,127) : stroke(255);
+      else if (this.diameter >= 80) (brightMode) ? stroke(255,131,0) : stroke(255);
+      else (brightMode) ? stroke(255,255,0) : stroke(255);
       noFill();
       ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
     }

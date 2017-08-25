@@ -197,8 +197,6 @@ function gamePlay() {
   myShip.move();
   myShip.display();
 
-  // was constant NUM_AST - this kept only ten on screen, but made ones that
-  // were on the screen disappear if others were appended in the middle
   for (let i = 0; i < asteroids.length; i++) {
     asteroids[i].move();
     asteroids[i].display();
@@ -389,7 +387,7 @@ function displayScore() {
 
 function displayLives() {
   noFill();
-  stroke(255);
+  (brightMode) ? stroke(0,0,255) : stroke(255);
   var xOffset = 40;
   var yOffset = 80;
   for (var i = 0; i < game.lives; i++) {
