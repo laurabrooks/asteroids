@@ -137,12 +137,17 @@ I organized and prioritized my features using Trello (https://trello.com/b/JQpM1
 
 
 ## Your biggest wins and challenges.
-* the physics was very hard!
- * I found resources to base the physics of the ship on
- * but I had to figure out the bullets on my own - make sure they have correct theta from ship at time of shot
- * for collision, I found that the ship was drawn by pushing a new coordinate matrix and rotated the whole coordinate system to drawn
- *
+  * the physics was very hard!
+    * I found resources to base the physics of the ship on
+    * but I had to figure out the bullets on my own - make sure they have correct theta from ship at time of shot
+    * for collision, I found that because the ship was drawn by pushing a new coordinate matrix and rotated the whole coordinate system to draw, the collision detection wasn't testing rotation.
+      * see the debugging process in these videos: [debugging](https://github.com/laurabrooks/asteroids/blob/master/process/debug.mov) and [debugged](https://github.com/laurabrooks/asteroids/blob/master/process/debugged.mov)
+  * for a while (seemingly) random asteroids would disappear when one asteroid was shot or collided with and it was really hard to debug because it was hard to know which were disappearing and how to make the bug happen
+    * I ended up printing the asteroid array index on each circle on the screen and that helped me see that it was asteroids in the array above index 9 that disappeared
+    * with this information, I knew to look at my loops that handle displaying asteroids and they only went up to the original number of asteroids, not the length of the array (after the asteroids break)
+
 
 
 ## Your process for turning that game into a web application (wireframes, blockers/issues that popped up).
-* wireframes
+* [Wireframe 1](https://github.com/laurabrooks/asteroids/blob/master/process/wireframe1)
+* [Wireframe 2](https://github.com/laurabrooks/asteroids/blob/master/process/wireframe2)
