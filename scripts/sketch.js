@@ -367,7 +367,7 @@ function handleAsteroids() {
 }
 
 function displayScore() {
-  (brightMode) ? fill(200,255,200) : fill(255);
+  (brightMode) ? fill(0,255,0) : fill(255);
   textAlign(LEFT);
   textFont('monospace', 40);
   text(game.score, 40, 40);
@@ -404,6 +404,16 @@ function centerShip() {
   myShip.velocity = createVector(0,0);
   myShip.acceleration = createVector(0,0);
   myShip.theta = 3*PI / 2;
+
+  // if asteroids are in the middle of the screen, clear them so you don't
+  // immediately lose another life
+  for (var i = 0; i < asteroids.length; i++) {
+    if ( (asteroids[i].position.x > width/3) && (asteroids[i].position.x < 2*width/3)
+        && (asteroids[i].position.y > height/3) && (asteroids[i].position.y < 2*height/3) )
+    {
+      asteroids[i] = new Asteroid();
+    }
+  }
 }
 
 function gameOver() {
