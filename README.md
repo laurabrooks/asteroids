@@ -13,12 +13,12 @@
 
 
 ## Technologies used
- * My game is made with p5.js. I render the entire browser window as a canvas and all UI and gameplay is handled in p5.js.
-  * https://p5js.org/
- * 5.collide2d library to check for collisions with asteroids
-  * https://github.com/bmoren/p5.collide2D
- * p5.sound library to play game sounds
-  * https://p5js.org/reference/#/libraries/p5.sound
+  * My game is made with p5.js. I render the entire browser window as a canvas and all UI and gameplay is handled in p5.js.
+    * https://p5js.org/
+  * 5.collide2d library to check for collisions with asteroids
+    * https://github.com/bmoren/p5.collide2D
+  * p5.sound library to play game sounds
+    * https://p5js.org/reference/#/libraries/p5.sound
   * game sounds downloaded here: http://www.classicgaming.cc/classics/asteroids/
 
 
@@ -150,4 +150,4 @@ I organized and prioritized my features using Trello (https://trello.com/b/JQpM1
 
 ## Your process for turning that game into a web application (wireframes, blockers/issues that popped up).
 * [Wireframe 1](https://github.com/laurabrooks/asteroids/blob/master/process/wireframe1)
-* [Wireframe 2](https://github.com/laurabrooks/asteroids/blob/master/process/wireframe2)
+* [Wireframe 2](https://github.com/laurabrooks/asteroids/blob/master/process/wireframes2)
