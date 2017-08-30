@@ -25,6 +25,8 @@ function Ship() {
       this.acceleration = createVector(0,0);
     }
   };
+
+  // if ship is going off screen, wrap it around to other side
   this.checkWrap = function() {
     if (Math.abs(this.position.y) > Math.abs(height/2) ) {
       this.position.y *= -1;
@@ -63,6 +65,7 @@ function Ship() {
     }
   };
 
+  // displays jet trail behind ship
   this.displayThrust = function() {
     push(); // creating new coordinate matrix
     translate(width / 2, height / 2); // make these calculations relative to the center of canvas
@@ -79,12 +82,12 @@ function Ship() {
     this.display(); //hacky way to make sure trail is behind ship
   }
 
+  // add a bullet
   this.shoot = function() {
     this.bullets[this.bullets.length] = new Bullet(
       (this.position.x + 2*this.scaleFactor * cos(this.theta))+width/2,
       (this.position.y + 2*this.scaleFactor * sin(this.theta))+height/2,
-
-      this.theta); // add a bullet
+      this.theta);
     this.bullets[this.bullets.length-1].fire();
   }
 }

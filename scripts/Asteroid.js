@@ -1,5 +1,7 @@
 function Asteroid() {
-  this.diameter = random(100, 300); //random diameter between 20 and 80
+  this.diameter = random(100, 300); //random diameter between bounds
+
+  // sets start position of asteroid just off-screen in a random location
   this.setStartPos = function() {
     var side = Math.round(Math.random()); //random either 0 or 1
     var offset = this.diameter/2; // amount to offset so asteroid start off screen
@@ -20,7 +22,7 @@ function Asteroid() {
   this.position = this.setStartPos();
   this.velocity = p5.Vector.random2D();
   this.timeStart = frameCount;
-  this.timeOffset = frameRate()*random(0, 5);
+  this.timeOffset = frameRate()*random(0, 5); // enter screen at random time up to 5sec
 
   // moves asteroid after its time offset
   this.move = function() {
