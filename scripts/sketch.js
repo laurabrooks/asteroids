@@ -12,6 +12,7 @@ var brightMode = false;
 
 var shootSound, thrustSound, bangSmall, bangMedium, bangLarge;
 
+// preload sound files
 function preload() {
   pixelated = loadFont('assets/pixelated_font/pixelated.ttf');
   soundFormats('wav');
@@ -79,6 +80,11 @@ function displayBeginGame() {
   text("press 'enter' to play", width/2, height/2+40);
 }
 
+// displays and handles tutorial
+// arrow keys are displayed on screen until user tries them plus 5
+//   seconds to play
+// then space is displayed until user tries to shoot plus 5 seconds
+// then begins the game, asteroids enter screen
 function tutorial() {
 
   displayScore();
@@ -268,7 +274,8 @@ function checkShipCollisions() {
   }
 }
 
-// uses p5 collide2d library to check if ship's bullets are colliding with asteroids
+// uses p5 collide2d library to check if ship's bullets are colliding
+// with asteroids
 function checkBulletCollisions() {
   var hit = false;
 
@@ -276,7 +283,7 @@ function checkBulletCollisions() {
     if (myShip.bullets[i].active) {
       for (var j = 0; j < asteroids.length; j++) {
 
-        // collide functions return a bool for whether these objects are colliding
+        // collide functions return a bool whether these objects are colliding
         hit = collideCircleCircle(
           asteroids[j].position.x, asteroids[j].position.y,
           asteroids[j].diameter,
@@ -308,7 +315,8 @@ function playHitSound(size) {
 }
 
 // called when there is a bullet or ship collision with an asteroid
-// if the asteroid is below a certain size, it just is regenerated as a new, random asteroid in start position
+// if the asteroid is below a certain size, it just is regenerated as a
+//   new, random asteroid in start position
 // if it is large enough, it gets split into two asteroids of half diameter
 function explodeAsteroid(index) {
   if (asteroids[index].diameter > 80) {
@@ -350,8 +358,8 @@ function keyPressed() {
   }
 }
 
+// don't let asteroids go off in random directions forever
 function handleAsteroids() {
-  // don't go off in random directions forever
   for (var i = 0; i < asteroids.length; i++) {
     if ( (asteroids[i].position.x > (width+asteroids[i].diameter/2) || asteroids[i].position.x < -(asteroids[i].diameter/2))  //off in x direction
       || (asteroids[i].position.y > (height+asteroids[i].diameter/2) || asteroids[i].position.y < -(asteroids[i].diameter/2)) //off in y direction

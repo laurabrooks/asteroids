@@ -17,7 +17,6 @@ function Game() {
     this.score += pts;
   };
   this.reset = function() {
-    console.log('reseting');
     this.score = 0;
     this.lives = 3;
   }
